@@ -17,7 +17,7 @@ def epsilon_greedy_policy(Q, epsilon, nA, state):
 	A[best_action] += (1 - epsilon)
 	return A
 
-def q_learning(env, num_episodes, discount_factor = 0.99, alpha = 0.5, epsilon = 1.0):
+def q_learning(env, num_episodes, discount_factor = 0.99, alpha = 0.1, epsilon = 1.0):
 	Q = defaultdict(lambda : np.zeros(env.action_space.n))
 	print("==================\n   Start training \n==================\n")
 	time.sleep(0.5)
@@ -69,7 +69,7 @@ def test_policy(Q, env, num_episodes):
 			state = next_state
 	print("\nNumber of episodes : {} \n   Success : {} \n   Successful rate : {}".format(num_episodes, success, success*100/num_episodes))
 
-env = gym.make("Taxi-v2")
+env = gym.make("FrozenLake-v0")
 num_episodes_train = 200000
 num_episodes_test = 2000
 Q, episodes_reward = q_learning(env, num_episodes_train)

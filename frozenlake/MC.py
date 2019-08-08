@@ -77,8 +77,8 @@ def test_policy(env, Q, num_episodes):
 	print("\nNumber of episodes : {} \n Success : {} \n Successful rate : {}".format(num_episodes, success, success*100/num_episodes))
 
 
-env = gym.make("Taxi-v2")
-train_num_episodes = 200000
+env = gym.make("FrozenLake-v0")
+train_num_episodes = 4000
 test_num_episodes = 2000
 
 Q = mc_control_epsilon_greedy(env, train_num_episodes)
