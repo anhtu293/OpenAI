@@ -87,4 +87,4 @@ num_train_episodes = 30000
 
 model = DeepQLearning(env, num_train_episodes)
 
-mode.save("MountainCar.h5")
+model.save("MountainCar.h5")

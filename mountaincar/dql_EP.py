@@ -54,15 +54,17 @@ dql = DeepQLearning(env)
 for i_episode in range(num_train_episodes):
 	state = env.reset()
 	state = state.reshape(1, env.observation_space.shape[0])
+	score = 0
 	for t in itertools.count():
 		action = dql.epsilon_greedy_policy(state)
 		next_state, reward, done, _ = env.step(action)
 		reward = reward if not done else -reward
+		score += reward
 		next_state = next_state.reshape(1, env.observation_space.shape[0])
 		dql.store_transition(state, action, reward, next_state, done)
 		state = next_state
 		if done:
-			print("Episode {} reward {}".format(i_episode+1, reward))
+			print("Episode {} reward {}".format(i_episode+1, score))
 			break
 		dql.experience_replay()
 
