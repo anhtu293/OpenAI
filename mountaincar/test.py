@@ -2,7 +2,7 @@ import gym
 import sys
 import time
 from collections import defaultdict
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import numpy as np
 import itertools
 
@@ -15,10 +15,10 @@ def test(env, model, samples):
 		time.sleep(0.5)
 		state = env.reset()
 		for t in itertools.count():
-			state = state.reshape(1,4)
+			state = state.reshape(1,2)
 			env.render()
-			time.sleep(0.1)
-			state = state.reshape(1,4)
+			time.sleep(0.03)
+			state = state.reshape(1,2)
 			action = np.argmax(model.predict(state, verbose = 0))
 			next_state, reward, done, _ = env.step(action)
 			total_reward += reward
@@ -34,7 +34,7 @@ def test_performance(env, model, num_episodes = 100):
 		state = env.reset()
 		total_reward = 0
 		for t in itertools.count():
-			state = state.reshape(1,4)
+			state = state.reshape(1,2)
 			action = np.argmax(model.predict(state, verbose = 0))
 			next_state, reward, done, _ = env.step(action)
 			total_reward += reward
@@ -46,8 +46,8 @@ def test_performance(env, model, num_episodes = 100):
 
 	print("Average Reward {}".format(np.sum(rewards) * 1.0 / num_episodes))
 
-env = gym.make("CartPole-v0")
-model = load_model("MountainCar.h5")
+env = gym.make("MountainCar-v0")
+model = load_model("MountainCar_dql.h5")
 
 num_samples = 10
 
