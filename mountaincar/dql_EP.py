@@ -24,7 +24,8 @@ class DeepQLearning:
 
 		self.model = Sequential()
 		self.model.add(Dense(64, input_dim = env.observation_space.shape[0], activation = "relu"))
-		self.model.add(Dense(32, activation = "relu"))
+		self.model.add(Dense(128, activation = "relu"))
+		self.model.add(Dense(256, activation = "relu"))
 		self.model.add(Dense(self.action_space, activation = "linear"))
 		self.model.compile(loss = "mse", optimizer = Adam(lr = self.learning_rate))
 	

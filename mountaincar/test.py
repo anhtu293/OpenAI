@@ -47,7 +47,7 @@ def test_performance(env, model, num_episodes = 100):
 	print("Average Reward {}".format(np.sum(rewards) * 1.0 / num_episodes))
 
 env = gym.make("MountainCar-v0")
-model = load_model("MountainCar_dql.h5")
+model = load_model("MountainCar_EP.h5")
 
 num_samples = 10
 
