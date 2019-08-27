@@ -13,6 +13,7 @@
 
 ## 3) Mountain Car:
 	- I've tried Deep Q Learning in this task (with and withou Experience Replay). 
+	
 	### TODO: 
 		- Try deeper nets
 		- Tune hyper-parameters

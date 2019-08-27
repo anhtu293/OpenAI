@@ -3,9 +3,9 @@ import sys
 import time
 import numpy as np
 import itertools
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.optimizers import Adam
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
 
 def nth_root(num, n):
 	return(n**(1/num))
@@ -14,7 +14,7 @@ def nth_root(num, n):
 def build_model(env):
 	model = Sequential()
 	model.add(Dense(100, input_dim = 2, activation = "relu"))
-	model.add(Dense(50, activation = "relu"))
+	#model.add(Dense(50, activation = "relu"))
 	model.add(Dense(env.action_space.n, activation = "linear"))
 	model.compile(loss = "mse", optimizer = Adam(lr = 0.01))
 	return model
@@ -56,7 +56,7 @@ def DeepQLearning(env, num_episodes, gamma = 0.99, epsilon = 1):
 		#initiate a episode
 		epsilon = epsilon * decay_epsilon
 		state = env.reset()
-		highest_point = state[0]
+		highest_point = np.absolute(state[0])
 		score = 0
 		for t in itertools.count():
 			state = state.reshape(1,2)
@@ -64,9 +64,9 @@ def DeepQLearning(env, num_episodes, gamma = 0.99, epsilon = 1):
 			next_state, reward, done, _ = env.step(action)
 			next_state = next_state.reshape(1,2)
 
-			if next_state[0][0] > highest_point:
+			if np.absolute(next_state[0][0]) > highest_point:
 				reward += np.absolute(next_state[0][0] - highest_point)*20
-				highest_point = next_state[0][0]
+				highest_point = np.absolute(next_state[0][0])
 
 			score += reward
 			
@@ -83,7 +83,7 @@ def DeepQLearning(env, num_episodes, gamma = 0.99, epsilon = 1):
 
 env = gym.make("MountainCar-v0")
 
-num_train_episodes = 30000
+num_train_episodes = 100000
 
 model = DeepQLearning(env, num_train_episodes)
 
