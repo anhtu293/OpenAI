@@ -3,8 +3,19 @@ import sys
 import time
 from collections import defaultdict
 from tensorflow.keras.models import load_model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
 import numpy as np
 import itertools
+
+def build_model(env):
+	model = Sequential()
+	model.add(Dense(100, input_dim = 2, activation = "relu"))
+	model.add(Dense(50, activation = "relu"))
+	model.add(Dense(env.action_space.n, activation = "linear"))
+	model.compile(loss = "mse", optimizer = Adam(lr = 0.001))
+	return model
 
 def test(env, model, samples):
 	print("==========\nTest\n==========")
@@ -47,6 +58,11 @@ def test_performance(env, model, num_episodes = 100):
 	print("Average Reward {}".format(np.sum(rewards) * 1.0 / num_episodes))
 
 env = gym.make("MountainCar-v0")
+
+#model = build_model(env)
+
+#model.load_weights("MountainCar_20000.h5")
+
 model = load_model("MountainCar.h5")
 
 num_samples = 10

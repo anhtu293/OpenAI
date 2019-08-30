@@ -6,6 +6,7 @@ import itertools
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.models import load_model
 
 def nth_root(num, n):
 	return(n**(1/num))
@@ -16,6 +17,11 @@ def build_model(env):
 	model.add(Dense(100, input_dim = 2, activation = "relu"))
 	model.add(Dense(50, activation = "relu"))
 	model.add(Dense(env.action_space.n, activation = "linear"))
+	model.compile(loss = "mse", optimizer = Adam(lr = 0.001))
+	return model
+
+def modelLoader(fname):
+	model = load_model(fname)
 	model.compile(loss = "mse", optimizer = Adam(lr = 0.001))
 	return model
 
@@ -85,15 +91,19 @@ def DeepQLearning(env, model, num_episodes, gamma = 0.99, epsilon = 1):
 					success += 1
 				break
 			state = next_state
+		if i_episode % 20000 == 0:
+			model.save_weights("MountainCar_{}.h5".format(i_episode))
+			print("\n Checkpoint episode {} : Model saved !".format(i_episode))
 	print("\nTraining Completed")
 	return model
 
 env = gym.make("MountainCar-v0")
 
-num_train_episodes = 20000
+num_train_episodes = 100000
 
 model = build_model(env)
 
 model = DeepQLearning(env, model, num_train_episodes)
 
+model.save_weights("MountainCar_weights.h5")
 model.save("MountainCar.h5")
